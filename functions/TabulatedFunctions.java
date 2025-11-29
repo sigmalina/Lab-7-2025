@@ -174,4 +174,38 @@ public final class TabulatedFunctions {
 
         return createTabulatedFunction(points);
     }
+    // перегруженные методы чтения с помощью рефлексии
+
+    public static TabulatedFunction inputTabulatedFunction(Class<?> functionClass, InputStream in) throws IOException {
+        DataInputStream dis = new DataInputStream(in);
+        int pointsCount = dis.readInt();
+        FunctionPoint[] points = new FunctionPoint[pointsCount];
+
+        for (int i = 0; i < pointsCount; i++) {
+            double x = dis.readDouble();
+            double y = dis.readDouble();
+            points[i] = new FunctionPoint(x, y);
+        }
+
+        return createTabulatedFunction(functionClass, points);
+    }
+
+    public static TabulatedFunction readTabulatedFunction(Class<?> functionClass, Reader in) throws IOException {
+        StreamTokenizer tokenizer = new StreamTokenizer(in);
+        tokenizer.parseNumbers();
+
+        tokenizer.nextToken();
+        int pointsCount = (int) tokenizer.nval;
+        FunctionPoint[] points = new FunctionPoint[pointsCount];
+
+        for (int i = 0; i < pointsCount; i++) {
+            tokenizer.nextToken();
+            double x = tokenizer.nval;
+            tokenizer.nextToken();
+            double y = tokenizer.nval;
+            points[i] = new FunctionPoint(x, y);
+        }
+
+        return createTabulatedFunction(functionClass, points);
+    }
 }

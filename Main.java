@@ -1,4 +1,5 @@
 import functions.*;
+import functions.basic.*;
 import java.util.Iterator;
 
 public class Main {
@@ -52,45 +53,31 @@ public class Main {
     }
 
     private static void testReflection() {
-        System.out.println(" Тестирование рефлексии ");
+        System.out.println("Тестирование рефлексии ");
 
         System.out.println("1. Создание ArrayTabulatedFunction через рефлексию:");
         TabulatedFunction f1 = TabulatedFunctions.createTabulatedFunction(
                 ArrayTabulatedFunction.class, 0, 10, 3);
+        System.out.println("   Класс: " + f1.getClass().getSimpleName());
         System.out.println("   Значения: " + f1);
 
         System.out.println("2. Создание ArrayTabulatedFunction через рефлексию:");
         TabulatedFunction f2 = TabulatedFunctions.createTabulatedFunction(
                 ArrayTabulatedFunction.class, 0, 10, new double[] {0, 10});
+        System.out.println("   Класс: " + f2.getClass().getSimpleName());
         System.out.println("   Значения: " + f2);
 
         System.out.println("3. Создание через рефлексию из массива точек:");
         TabulatedFunction f3 = TabulatedFunctions.createTabulatedFunction(
                 LinkedListTabulatedFunction.class,
                 new FunctionPoint[] {new FunctionPoint(0, 0), new FunctionPoint(10, 10)});
+        System.out.println("   Класс: " + f3.getClass().getSimpleName());
         System.out.println("   Значения: " + f3);
 
         System.out.println("4. Табулирование с рефлексией:");
         TabulatedFunction f4 = TabulatedFunctions.tabulate(
-                LinkedListTabulatedFunction.class, new Sin(), 0, Math.PI, 11); // ← 11 точек как в задании
+                LinkedListTabulatedFunction.class, new Sin(), 0, Math.PI, 11);
+        System.out.println("   Класс: " + f4.getClass().getSimpleName());
         System.out.println("   Значения: " + f4);
     }
-}
-
-class Cos implements Function {
-    @Override
-    public double getLeftDomainBorder() { return Double.NEGATIVE_INFINITY; }
-    @Override
-    public double getRightDomainBorder() { return Double.POSITIVE_INFINITY; }
-    @Override
-    public double getFunctionValue(double x) { return Math.cos(x); }
-}
-
-class Sin implements Function {
-    @Override
-    public double getLeftDomainBorder() { return Double.NEGATIVE_INFINITY; }
-    @Override
-    public double getRightDomainBorder() { return Double.POSITIVE_INFINITY; }
-    @Override
-    public double getFunctionValue(double x) { return Math.sin(x); }
 }
